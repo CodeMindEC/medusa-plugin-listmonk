@@ -3,6 +3,30 @@
   "description": "A starter for Medusa plugins.",
   "version": "0.0.1",
   "author": "Medusa (https://medusajs.com)",
+  "license": "MIT",
+  "main": "./.medusa/server/src/index.js",
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "import": "./.medusa/server/src/index.js",
+      "require": "./.medusa/server/src/index.js",
+      "default": "./.medusa/server/src/index.js"
+    },
+    "./.medusa/server/src/modules/*": "./.medusa/server/src/modules/*/index.js",
+    "./modules/*": "./.medusa/server/src/modules/*/index.js",
+    "./providers/*": "./.medusa/server/src/providers/*/index.js",
+    "./*": "./.medusa/server/src/*.js",
+    "./admin": {
+      "import": "./.medusa/server/src/admin/index.mjs",
+      "require": "./.medusa/server/src/admin/index.js",
+      "default": "./.medusa/server/src/admin/index.js"
+    }
+  },
+  "scripts": {
+    "build": "medusa plugin:build",
+    "dev": "medusa plugin:develop",
+    "prepublishOnly": "medusa plugin:build"
+  },
   "devDependencies": {
     "@medusajs/admin-sdk": "2.13.3",
     "@medusajs/admin-shared": "2.13.3",
@@ -27,23 +51,6 @@
   "engines": {
     "node": ">=20"
   },
-  "exports": {
-    "./package.json": "./package.json",
-    ".": {
-      "import": "./.medusa/server/src/index.js",
-      "require": "./.medusa/server/src/index.js",
-      "default": "./.medusa/server/src/index.js"
-    },
-    "./.medusa/server/src/modules/*": "./.medusa/server/src/modules/*/index.js",
-    "./modules/*": "./.medusa/server/src/modules/*/index.js",
-    "./providers/*": "./.medusa/server/src/providers/*/index.js",
-    "./*": "./.medusa/server/src/*.js",
-    "./admin": {
-      "import": "./.medusa/server/src/admin/index.mjs",
-      "require": "./.medusa/server/src/admin/index.js",
-      "default": "./.medusa/server/src/admin/index.js"
-    }
-  },
   "files": [
     ".medusa/server"
   ],
@@ -54,8 +61,6 @@
     "medusa-v2",
     "plugin"
   ],
-  "license": "MIT",
-  "main": "./.medusa/server/src/index.js",
   "packageManager": "pnpm@9.15.9",
   "peerDependencies": {
     "@medusajs/admin-sdk": "2.13.3",
@@ -66,10 +71,5 @@
     "@medusajs/medusa": "2.13.3",
     "@medusajs/test-utils": "2.13.3",
     "@medusajs/ui": "^4.0.27"
-  },
-  "scripts": {
-    "build": "medusa plugin:build",
-    "dev": "medusa plugin:develop",
-    "prepublishOnly": "medusa plugin:build"
   }
 }
