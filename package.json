@@ -1,8 +1,8 @@
 {
-  "name": "medusa-notification-listmonk",
-  "description": "A starter for Medusa plugins.",
-  "version": "0.0.1",
-  "author": "Medusa (https://medusajs.com)",
+  "name": "@codemind/medusa-plugin-listmonk",
+  "description": "Medusa v2 notification provider for Listmonk — transactional emails with template mapping for orders, payments, and receipts.",
+  "version": "1.0.0",
+  "author": "Kollor <dev@codemind.ec> (https://codemind.ec)",
   "license": "MIT",
   "main": "./.medusa/server/src/index.js",
   "exports": {
@@ -57,9 +57,13 @@
   "keywords": [
     "medusa",
     "medusa-plugin",
-    "medusa-plugin-other",
     "medusa-v2",
-    "plugin"
+    "plugin",
+    "listmonk",
+    "notification",
+    "email",
+    "codemind",
+    "kollor"
   ],
   "packageManager": "pnpm@9.15.9",
   "peerDependencies": {
