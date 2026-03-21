@@ -41,33 +41,47 @@ pnpm add @codemind.ec/medusa-plugin-listmonk
 
 ## Configuration
 
-Add the plugin to your `medusa-config.ts`:
+This is a **notification provider**, not a standalone plugin. Register it under the notification module in your `medusa-config.ts`:
 
 ```typescript
 import { defineConfig } from "@medusajs/framework/utils"
 
 export default defineConfig({
   // ...
-  plugins: [
+  modules: [
     {
-      resolve: "@codemind.ec/medusa-plugin-listmonk",
+      resolve: "@medusajs/medusa/notification",
       options: {
-        url: process.env.LISTMONK_URL,
-        username: process.env.LISTMONK_USERNAME,
-        password: process.env.LISTMONK_PASSWORD,
-        from_email: process.env.LISTMONK_FROM_EMAIL,
-        list_id: process.env.LISTMONK_LIST_ID,
-        template_map: {
-          "order-placed": 10,
-          "order-updated": 11,
-          "payment-captured": 12,
-          "receipt-uploaded": 13,
-        },
+        providers: [
+          {
+            resolve: "@codemind.ec/medusa-plugin-listmonk",
+            id: "listmonk",
+            options: {
+              channels: ["email"],
+              url: process.env.LISTMONK_URL,
+              username: process.env.LISTMONK_USERNAME,
+              password: process.env.LISTMONK_PASSWORD,
+              from_email: process.env.LISTMONK_FROM_EMAIL,
+              list_id: process.env.LISTMONK_LIST_ID,
+              template_map: {
+                "order-placed": process.env.LISTMONK_TEMPLATE_ID_ORDER_PLACED || "order-placed",
+                "order-placed-admin": process.env.LISTMONK_TEMPLATE_ID_ORDER_PLACED_ADMIN || "order-placed-admin",
+                "order-updated": process.env.LISTMONK_TEMPLATE_ID_ORDER_UPDATED || "order-updated",
+                "payment-captured": process.env.LISTMONK_TEMPLATE_ID_PAYMENT_CAPTURED || "payment-captured",
+                "payment-captured-admin": process.env.LISTMONK_TEMPLATE_ID_PAYMENT_CAPTURED_ADMIN || "payment-captured-admin",
+                "receipt-uploaded": process.env.LISTMONK_TEMPLATE_ID_RECEIPT_UPLOADED || "receipt-uploaded",
+              },
+            },
+          },
+        ],
       },
     },
   ],
 })
 ```
+
+> **Nota:** Este paquete NO se agrega a `plugins[]`. Se registra como proveedor de notificaciones dentro del módulo `@medusajs/medusa/notification`.
+> Los valores de `template_map` pueden ser IDs numéricos de Listmonk (e.g. `10`) o nombres semánticos que Listmonk resuelve por nombre de template.
 
 ### Environment Variables
 
@@ -78,6 +92,13 @@ export default defineConfig({
 | `LISTMONK_PASSWORD` | No | Basic Auth password |
 | `LISTMONK_FROM_EMAIL` | No | Default sender email |
 | `LISTMONK_LIST_ID` | No | Default list ID for new subscribers |
+| `LISTMONK_LIST_UUID` | No | List UUID (for other Listmonk endpoints if needed) |
+| `LISTMONK_TEMPLATE_ID_ORDER_PLACED` | No | Template for order placed (customer) |
+| `LISTMONK_TEMPLATE_ID_ORDER_PLACED_ADMIN` | No | Template for order placed (admin) |
+| `LISTMONK_TEMPLATE_ID_ORDER_UPDATED` | No | Template for order updated |
+| `LISTMONK_TEMPLATE_ID_PAYMENT_CAPTURED` | No | Template for payment captured (customer) |
+| `LISTMONK_TEMPLATE_ID_PAYMENT_CAPTURED_ADMIN` | No | Template for payment captured (admin) |
+| `LISTMONK_TEMPLATE_ID_RECEIPT_UPLOADED` | No | Template for receipt uploaded |
 
 ### Options Reference
 
@@ -88,6 +109,7 @@ export default defineConfig({
 | `password` | string? | Basic Auth password |
 | `from_email` | string? | Default sender email |
 | `list_id` | string? | Listmonk list ID for subscriber assignment |
+| `list_uuid` | string? | Listmonk list UUID |
 | `template_map` | `Record<string, string \| number>`? | Map of semantic names → Listmonk template IDs |
 
 ---
